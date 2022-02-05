@@ -20,25 +20,12 @@ void tap_key(uint16_t keycode)
   unregister_code(keycode);
 }
 
-uint8_t layer_before_lower = 0;
-
 void dance_colemak(qk_tap_dance_state_t* state, void* user_data)
 {
-    uint8_t layer = biton32(layer_state);
-
     if (state->count == 2)
     {
         layer_invert(_COLEMAK);
         layer_invert(_QWERTY);
-
-        if (layer == _QWERTY)
-        {
-        SEND_STRING ("QWERTY");
-        }
-        else
-        {
-        SEND_STRING ("Colemak");
-        }
     }
     else
     {
@@ -160,12 +147,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 
 //SSD1306 OLED update loop, make sure to enable OLED_ENABLE=yes in rules.mk
-#ifdef OLED_ENABLE
-
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master())
-    return OLED_ROTATION_270;
+#ifdef BONGO
+  return OLED_ROTATION_270;
+#else
   return false;
+#endif
 }
 
 // When you add source files to SRC in rules.mk, you can use functions.
@@ -180,13 +167,9 @@ const char *read_keylogs(void);
 // void set_timelog(void);
 // const char *read_timelog(void);
 
-#endif // OLED_ENABLE
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-#ifdef OLED_ENABLE
     set_keylog(keycode, record);
-#endif
     // set_timelog();
   }
   return true;
@@ -199,7 +182,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // OLED_ENABLE = yes
 // WPM_ENABLE = yes
 
-#ifdef OLED_ENABLE
 // WPM-responsive animation stuff here
 #    define IDLE_FRAMES 4
 #    define IDLE_SPEED 20  // below this wpm value your animation will idle
@@ -305,16 +287,16 @@ void bongocat(void) {
     // oled_write_P(led_state.caps_lock ? PSTR("CAPS") : PSTR("       "), false);
     switch (biton32(layer_state)) {
         case _QWERTY:
-            oled_write_ln_P(PSTR("QWERTY"), false);
+            oled_write("QWERTY", false);
             break;
         case _LOWER:
-            oled_write_ln_P(PSTR("Lower"), false);
+            oled_write(PSTR("Lower"), false);
             break;
         case _RAISE:
-            oled_write_ln_P(PSTR("Raise"), false);
+            oled_write(PSTR("Raise"), false);
             break;
         case _COLEMAK:
-            oled_write_ln_P(PSTR("COLEMAK"), false);
+            oled_write(PSTR("COLEMAK"), false);
             break;
         default:
             oled_write_ln("undefined", false);
@@ -365,25 +347,11 @@ void we(void) {
 
 
 bool oled_task_user(void) {
-    //bongocat();
-    //we();
-
-    switch (biton32(layer_state)) {
-        case _QWERTY:
-            oled_write_ln_P(PSTR("QWERTY"), false);
-            break;
-        case _LOWER:
-            oled_write_ln_P(PSTR("Lower"), false);
-            break;
-        case _RAISE:
-            oled_write_ln_P(PSTR("Raise"), false);
-            break;
-        case _COLEMAK:
-            oled_write_ln_P(PSTR("COLEMAK"), false);
-            break;
-        default:
-            oled_write_ln("undefined", false);
-    }
+#ifdef BONGO
+    bongocat();
+#else
+    we();
+#endif
 
   //if (is_keyboard_master()) {
   //} else {
@@ -397,4 +365,3 @@ bool oled_task_user(void) {
   //}
     return false;
 }
-#endif
