@@ -17,6 +17,11 @@ enum custom_keycodes {
 
 enum {
   TD_QWERTY_COLEMAK = 0,
+  TD_A,
+  TD_E,
+  TD_I,
+  TD_O,
+  TD_U,
 };
 
 void dance_colemak(qk_tap_dance_state_t* state, void* user_data)
@@ -39,8 +44,56 @@ void dance_no_lower(qk_tap_dance_state_t* state, void* user_data)
     layer_off(_LOWER);
 }
 
+void acc4(int code, char* uc, char* sh_uc, char* uc2, char* sh_uc2, qk_tap_dance_state_t *state) {
+    if (state->count >= 3) {
+        if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT)) {
+            send_unicode_string(sh_uc2);
+        } else {
+            send_unicode_string(uc2);
+        }
+        reset_tap_dance(state);
+    }
+	else if (state->count == 2) {
+        if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT)) {
+            send_unicode_string(sh_uc);
+        } else {
+            send_unicode_string(uc);
+        }
+        reset_tap_dance(state);
+    }
+	else
+	{
+		tap_code(code);
+	}
+}
+
+void accented(int code, char* uc, char* sh_uc, qk_tap_dance_state_t *state) {
+	acc4(code, uc, sh_uc, uc, sh_uc, state);
+}
+
+void acc_a(qk_tap_dance_state_t *state, void *user_data) {
+  accented(KC_A, "à", "À", state);
+}
+void acc_e(qk_tap_dance_state_t *state, void *user_data) {
+  acc4(KC_E, "é", "É", "è", "È", state);
+}
+void acc_i(qk_tap_dance_state_t *state, void *user_data) {
+  accented(KC_I, "ì", "Ì", state);
+}
+void acc_o(qk_tap_dance_state_t *state, void *user_data) {
+  accented(KC_O, "ò", "Ò", state);
+}
+void acc_u(qk_tap_dance_state_t *state, void *user_data) {
+  accented(KC_U, "ù", "Ù", state);
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [TD_QWERTY_COLEMAK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_colemak, dance_no_lower),
+    [TD_QWERTY_COLEMAK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_colemak, dance_no_lower),
+    [TD_A]              = ACTION_TAP_DANCE_FN(acc_a),
+    [TD_E]              = ACTION_TAP_DANCE_FN(acc_e),
+    [TD_I]              = ACTION_TAP_DANCE_FN(acc_i),
+    [TD_O]              = ACTION_TAP_DANCE_FN(acc_o),
+    [TD_U]              = ACTION_TAP_DANCE_FN(acc_u),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -61,10 +114,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
  [_QWERTY] = LAYOUT( \
-	KC_ESC,		KC_1,		KC_2,	KC_3,	KC_4,	KC_5,								KC_6,	KC_7,	KC_8,		KC_9,		KC_0,		KC_MINS,\
-	KC_TAB,		KC_Q,		KC_W,	KC_E,	KC_R,	KC_T,								KC_Y,	KC_U,	KC_I,		KC_O,		KC_P,		KC_EQL, \
-	KC_LCTRL,	KC_A,		KC_S,	KC_D,	KC_F,	KC_G,								KC_H,	KC_J,	KC_K,		KC_L,		KC_SCLN,	KC_QUOT, \
-	KC_LSFT,	KC_Z,		KC_X,	KC_C,	KC_V,	KC_B,		KC_LBRC,	KC_RBRC,	KC_N,	KC_M,	KC_COMM,	KC_DOT,		KC_SLSH,	KC_BSLS,	\
+	KC_ESC,		KC_1,		KC_2,	KC_3,		KC_4,	KC_5,								KC_6,	KC_7,		KC_8,		KC_9,		KC_0,		KC_MINS,\
+	KC_TAB,		KC_Q,		KC_W,	TD(TD_E),	KC_R,	KC_T,								KC_Y,	TD(TD_U),	TD(TD_I),	TD(TD_O),	KC_P,		KC_EQL, \
+	KC_LCTRL,	TD(TD_A),	KC_S,	KC_D,		KC_F,	KC_G,								KC_H,	KC_J,		KC_K,		KC_L,		KC_SCLN,	KC_QUOT, \
+	KC_LSFT,	KC_Z,		KC_X,	KC_C,		KC_V,	KC_B,		KC_LBRC,	KC_RBRC,	KC_N,	KC_M,		KC_COMM,	KC_DOT,		KC_SLSH,	KC_BSLS,	\
     			KC_LALT,	KC_LGUI,	TD(TD_QWERTY_COLEMAK),	KC_SPC,		KC_ENT,		MO(_RAISE),	KC_BSPC,	KC_GRV\
 ),
  [_COLEMAK] = LAYOUT( \
