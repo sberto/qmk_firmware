@@ -63,7 +63,7 @@ void acc4(int code, char* uc, char* sh_uc, char* uc2, char* sh_uc2, qk_tap_dance
     }
 	else
 	{
-		tap_code(code);
+		register_code(code);
 	}
 }
 
@@ -87,13 +87,29 @@ void acc_u(qk_tap_dance_state_t *state, void *user_data) {
   accented(KC_U, "ù", "Ù", state);
 }
 
+void stop_a(qk_tap_dance_state_t *state, void *user_data) {
+	unregister_code(KC_A);
+}
+void stop_e(qk_tap_dance_state_t *state, void *user_data) {
+	unregister_code(KC_E);
+}
+void stop_i(qk_tap_dance_state_t *state, void *user_data) {
+	unregister_code(KC_I);
+}
+void stop_o(qk_tap_dance_state_t *state, void *user_data) {
+	unregister_code(KC_O);
+}
+void stop_u(qk_tap_dance_state_t *state, void *user_data) {
+	unregister_code(KC_U);
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_QWERTY_COLEMAK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_colemak, dance_no_lower),
-    [TD_A]              = ACTION_TAP_DANCE_FN(acc_a),
-    [TD_E]              = ACTION_TAP_DANCE_FN(acc_e),
-    [TD_I]              = ACTION_TAP_DANCE_FN(acc_i),
-    [TD_O]              = ACTION_TAP_DANCE_FN(acc_o),
-    [TD_U]              = ACTION_TAP_DANCE_FN(acc_u),
+    [TD_A]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_a, stop_a),
+    [TD_E]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_e, stop_e),
+    [TD_I]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_i, stop_i),
+    [TD_O]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_o, stop_o),
+    [TD_U]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_u, stop_u),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
