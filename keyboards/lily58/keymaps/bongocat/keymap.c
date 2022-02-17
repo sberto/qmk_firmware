@@ -22,6 +22,7 @@ enum {
   TD_I,
   TD_O,
   TD_U,
+  TD_DEL,
 };
 
 void dance_colemak(qk_tap_dance_state_t* state, void* user_data)
@@ -110,6 +111,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_I]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_i, stop_i),
     [TD_O]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_o, stop_o),
     [TD_U]              = ACTION_TAP_DANCE_FN_ADVANCED(NULL, acc_u, stop_u),
+    [TD_DEL] = ACTION_TAP_DANCE_DOUBLE(KC_BSPC, KC_DEL),
 };
 
 #define CAPS_CTRL MT(MOD_LCTL, KC_CAPS)
@@ -135,14 +137,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	KC_TAB,		KC_Q,		KC_W,	KC_F,	KC_P,	KC_B,                    			KC_J,	KC_L,	TD(TD_U),	KC_Y,		KC_SCLN,	KC_EQL, \
 	CAPS_CTRL,	TD(TD_A),	KC_R,	KC_S,	KC_T,	KC_G,                   			KC_M,	KC_N,	TD(TD_E),	TD(TD_I),	TD(TD_O),		KC_QUOT, \
 	KC_LSFT,	KC_Z,		KC_X,	KC_C,	KC_D,	KC_V,		KC_LBRC,	KC_RBRC,	KC_K,	KC_H,	KC_COMM,	KC_DOT,		KC_SLSH,  KC_BSLS,	\
-				KC_LALT,	KC_LGUI,	TD(TD_QWERTY_COLEMAK),	KC_SPC,		KC_ENT,		MO(_RAISE),	KC_BSPC,	KC_GRV \
+				KC_LALT,	KC_LGUI,	TD(TD_QWERTY_COLEMAK),	KC_SPC,		KC_ENT,		MO(_RAISE),	TD(TD_DEL),	KC_GRV \
 ),
  [_QWERTY] = LAYOUT( \
 	KC_ESC,		KC_1,		KC_2,	KC_3,		KC_4,	KC_5,								KC_6,	KC_7,		KC_8,		KC_9,		KC_0,		KC_MINS,\
 	KC_TAB,		KC_Q,		KC_W,	TD(TD_E),	KC_R,	KC_T,								KC_Y,	TD(TD_U),	TD(TD_I),	TD(TD_O),	KC_P,		KC_EQL, \
 	CAPS_CTRL,  TD(TD_A),	KC_S,	KC_D,		KC_F,	KC_G,								KC_H,	KC_J,		KC_K,		KC_L,		KC_SCLN,	KC_QUOT, \
 	KC_LSFT,	KC_Z,		KC_X,	KC_C,		KC_V,	KC_B,		KC_LBRC,	KC_RBRC,	KC_N,	KC_M,		KC_COMM,	KC_DOT,		KC_SLSH,	KC_BSLS,	\
-    			KC_LALT,	KC_LGUI,	TD(TD_QWERTY_COLEMAK),	KC_SPC,		KC_ENT,		MO(_RAISE),	KC_BSPC,	KC_GRV\
+    			KC_LALT,	KC_LGUI,	TD(TD_QWERTY_COLEMAK),	KC_SPC,		KC_ENT,		MO(_RAISE),	TD(TD_DEL),	KC_GRV\
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
