@@ -62,7 +62,7 @@ void acc4(int code, char* uc, char* sh_uc, char* uc2, char* sh_uc2, qk_tap_dance
         }
         reset_tap_dance(state);
     }
-	else
+	else if (biton32(layer_state) == _COLEMAK ||  biton32(layer_state) == _QWERTY) 
 	{
 		register_code(code);
 	}
