@@ -13,6 +13,7 @@ enum layer_number {
 
 enum custom_keycodes {
   PASTE_BIN = SAFE_RANGE,
+  RIAVVIO_DEV,
 };
 
 enum {
@@ -161,10 +162,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   `----------------------------'           '------''--------------------'
  */
 [_LOWER] = LAYOUT( \
-  _______, _______, _______, _______, _______,   _______,                   _______, _______, _______,_______, _______, _______,\
-  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-  KC_GRV, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,     KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_TILD, \
-  _______, _______, _______, _______, PASTE_BIN, _______, _______, _______, XXXXXXX, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
+  _______,  RIAVVIO_DEV, 	_______, 	 _______, _______,   _______,                   _______, _______, _______,_______, _______, _______,\
+  KC_F1,    KC_F2,			KC_F3,   	 KC_F4,   	  KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
+  KC_GRV, 	KC_EXLM, 		KC_AT,  	 KC_HASH, 	  KC_DLR,  KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_TILD, \
+  _______, 	LGUI(KC_MINS), 	LGUI(KC_0),LSG(KC_EQL), _______, PASTE_BIN, _______, _______, XXXXXXX, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
                              _______, _______,   _______, _______, _______,  _______, _______, _______\
 ),
 /* RAISE
@@ -245,6 +246,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING("<<\"");
           SEND_STRING(SS_LGUI("v"));
           SEND_STRING("\">>");
+      }
+      break;
+    case RIAVVIO_DEV:
+      if (record->event.pressed) {
+          SEND_STRING(":rotating_light: RIAVVIO DEV!");
       }
       break;
   }
