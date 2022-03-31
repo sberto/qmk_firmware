@@ -205,9 +205,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   `----------------------------'           '------''--------------------'
  */
   [_ADJUST] = LAYOUT( \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                  	XXXXXXX, XXXXXXX, XXXXXXX,	XXXXXXX,	XXXXXXX, 	XXXXXXX, \
+  XXXXXXX, XXXXXXX, MEH(KC_A), MEH(KC_S), MEH(KC_D), XXXXXXX,               XXXXXXX, MEH(KC_H), MEH(KC_J), MEH(KC_K),  MEH(KC_L), XXXXXXX, \
+  XXXXXXX, XXXXXXX, LSA(KC_A), LSA(KC_S), LSA(KC_D), XXXXXXX, 				XXXXXXX, LSA(KC_H), LSA(KC_J), LSA(KC_K),  LSA(KC_L), XXXXXXX, \
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
                              _______, _______, _______, _______, _______,  _______, _______, _______ \
   )
@@ -384,6 +384,9 @@ void bongocat(void) {
             break;
         case _COLEMAK:
             oled_write_P(PSTR("COLEMAK"), false);
+            break;
+        case _ADJUST:
+            oled_write_P(PSTR("Adjust"), false);
             break;
         default:
             oled_write_P(PSTR("undefined"), false);
